@@ -44,3 +44,12 @@ Thumbs.db
 .claude/settings.local.json
 
 test-output
+
+/generated/prisma
+
+# Next.js
+.next
+out
+
+# Environment variables
+.env

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Your Seller Account</title>
+</head>
+
+<body style="margin:0;padding:0;background:#0f172a;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0f172a">
+    <tr>
+      <td align="center" style="padding:40px 15px;">
+
+        <!-- Main Container -->
+        <table
+          width="100%"
+          border="0"
+          cellspacing="0"
+          cellpadding="0"
+          style="max-width:600px;background:#111827;border-radius:16px;border:1px solid #1f2937;"
+        >
+
+          <!-- Top Bar -->
+          <tr>
+            <td height="6" bgcolor="#10B981"></td>
+          </tr>
+
+          <!-- Logo -->
+          <tr>
+            <td align="center" style="padding:40px 30px 20px;">
+              <table border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td
+                    style="background:#1f2937;border:1px solid #374151;border-radius:12px;padding:12px 24px;"
+                  >
+                    <span
+                      style="font-size:24px;font-weight:700;color:#ffffff;letter-spacing:1px;"
+                    >
+                      E<span style="color:#10B981;">S</span>HOP
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Heading -->
+          <tr>
+            <td align="center" style="padding:0 30px;">
+              <h1
+                style="margin:0;color:#ffffff;font-size:28px;font-weight:700;"
+              >
+                Verify Your Seller Account
+              </h1>
+
+              <p
+                style="margin:12px 0 0;color:#9ca3af;font-size:12px;letter-spacing:2px;text-transform:uppercase;"
+              >
+                SELLER REGISTRATION VERIFICATION
+              </p>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:25px 30px;">
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td height="1" bgcolor="#1f2937"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td style="padding:0 30px;">
+              <p
+                style="margin:0 0 16px;color:#f3f4f6;font-size:16px;line-height:26px;"
+              >
+                Hello <strong><%= name %></strong>,
+              </p>
+
+              <p
+                style="margin:0;color:#9ca3af;font-size:15px;line-height:26px;"
+              >
+                Welcome to <strong style="color:#ffffff;">Eshop</strong>! Thank
+                you for registering as a seller. To complete your registration
+                and activate your seller account, please verify your email
+                address using the OTP below.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Info Alert -->
+          <tr>
+            <td style="padding:25px 30px 10px;">
+              <table
+                width="100%"
+                style="background:#064e3b;border:1px solid #10b981;border-radius:10px;"
+              >
+                <tr>
+                  <td style="padding:14px;">
+                    <p
+                      style="margin:0;color:#d1fae5;font-size:13px;line-height:20px;"
+                    >
+                      🎉 You're just one step away from becoming an Eshop Seller.
+                      Enter the verification code below to activate your seller
+                      account.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- OTP -->
+          <tr>
+            <td align="center" style="padding:35px 20px;">
+              <table border="0" cellspacing="0" cellpadding="0">
+                <tr>
+
+                  <% for(let i = 0; i < otp.length; i++) { %>
+
+                  <td
+                    align="center"
+                    style="
+                      width:52px;
+                      height:60px;
+                      background:#1f2937;
+                      border:1px solid #374151;
+                      border-radius:8px;
+                      color:#10B981;
+                      font-size:28px;
+                      font-weight:700;
+                      font-family:monospace;
+                    "
+                  >
+                    <%= otp[i] %>
+                  </td>
+
+                  <% if(i < otp.length - 1) { %>
+                  <td width="10"></td>
+                  <% } %>
+
+                  <% } %>
+
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Security Notice -->
+          <tr>
+            <td style="padding:0 30px 30px;">
+              <table
+                width="100%"
+                style="background:#1f2937;border-radius:10px;"
+              >
+                <tr>
+                  <td style="padding:16px;">
+                    <p
+                      style="margin:0;color:#d1d5db;font-size:13px;line-height:22px;"
+                    >
+                      <strong style="color:#10B981;">
+                        Verification Notice:
+                      </strong>
+                      This OTP is valid for
+                      <strong style="color:#10B981;">5 minutes</strong>.
+                      Do not share this verification code with anyone. Eshop
+                      will never ask for your OTP.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:0 30px;">
+              <table width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td height="1" bgcolor="#1f2937"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Help Section -->
+          <tr>
+            <td align="center" style="padding:30px;">
+              <p
+                style="margin:0 0 10px;color:#9ca3af;font-size:13px;"
+              >
+                Need help with seller registration?
+              </p>
+
+              <a
+                href="https://yourdomain.com/support"
+                style="
+                  color:#10B981;
+                  text-decoration:none;
+                  font-size:14px;
+                  font-weight:600;
+                "
+              >
+                Contact Seller Support →
+              </a>
+            </td>
+          </tr>
+
+        </table>
+
+        <!-- Footer -->
+        <table
+          width="100%"
+          border="0"
+          cellspacing="0"
+          cellpadding="0"
+          style="max-width:600px;"
+        >
+          <tr>
+            <td align="center" style="padding:25px 20px 0;">
+
+              <p
+                style="margin:0 0 8px;color:#6b7280;font-size:12px;"
+              >
+                © 2026 Eshop. All rights reserved.
+              </p>
+
+              <p
+                style="margin:0;color:#6b7280;font-size:11px;line-height:18px;"
+              >
+                You received this email because a seller account registration
+                was initiated using this email address. If you did not request
+                this registration, you can safely ignore this email.
+              </p>
+
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
