@@ -9,8 +9,6 @@ import proxy from 'express-http-proxy';
 import morgan from 'morgan';
 import * as path from 'path';
 import rateLimit from 'express-rate-limit';
-import swaggerUi from 'swagger-ui-express';
-import axios from 'axios';
 import cookieParser from 'cookie-parser';
 const app = express();
 app.use(cors({
