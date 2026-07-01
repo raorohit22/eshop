@@ -26,6 +26,8 @@ const Signup = () => {
 	const [sellerData, setSellerData] = useState<FormData | null>(null);
 	const [showOtp, setShowOtp] = useState(false);
 	const [sellerId, setSellerId] = useState("");
+	const [stripeLoading, setStripeLoading] = useState(false);
+	const [stripeError, setStripeError] = useState("");
 	const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
 	const { register, handleSubmit, formState: { errors } } = useForm({});
@@ -106,6 +108,9 @@ const Signup = () => {
 	};
 
 	const connectStripe = async () => {
+		if (stripeLoading) return;
+		setStripeLoading(true);
+		setStripeError("");
 		try {
 			const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/create-stripe-link`, { sellerId }
 			);
@@ -115,8 +120,15 @@ const Signup = () => {
 			}
 
 		} catch (error) {
-			console.log("Stripe connection Error:", error)
-		};
+			if (error instanceof AxiosError) {
+				setStripeError(error.response?.data?.message || "Failed to connect Stripe. Please try again.");
+			} else {
+				setStripeError("An unexpected error occurred. Please try again.");
+			}
+			console.error("Stripe connection Error:", error);
+		} finally {
+			setStripeLoading(false);
+		}
 	}
 
 	return (
@@ -306,11 +318,15 @@ const Signup = () => {
 						<br />
 						<button
 							onClick={connectStripe}
+							disabled={stripeLoading}
 							className="w-full m-auto flex items-center justify-center gap-3 
-						text-lg cursor-pointer bg-[#334155] text-white py-2 rounded-lg">
-							Connect Stripe <StripeLogo />
+						text-lg cursor-pointer bg-[#334155] text-white py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+							{stripeLoading ? "Connecting..." : "Connect Stripe"} <StripeLogo />
 
 						</button>
+						{stripeError && (
+							<p className="text-red-500 text-sm mt-2">{stripeError}</p>
+						)}
 
 					</div>
 

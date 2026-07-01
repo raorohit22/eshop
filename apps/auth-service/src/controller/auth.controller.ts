@@ -11,7 +11,7 @@ import {
   verifyOtp,
 } from "../utils/auth.helper";
 import prisma from "@packages/libs/prisma";
-import { AuthError, ValidationError } from "@packages/error-handler";
+import { AppError, AuthError, ValidationError } from "@packages/error-handler";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { setCookie } from "../utils/cookies/setCookie";
@@ -390,37 +390,59 @@ export const createStripeConnectLink = async (
       return next(new ValidationError("Seller ID is required!"));
     }
 
-    const seller = await prisma.sellers.findUnique({ where: { id: sellerId } });
+    let seller;
+    try {
+      seller = await prisma.sellers.findUnique({ where: { id: sellerId } });
+    } catch (dbError) {
+      // Prisma throws on invalid ObjectId format
+      return next(new ValidationError("Invalid Seller ID format!"));
+    }
+
     if (!seller) {
       return next(new ValidationError("Seller not found!"));
     }
 
-    const account = await stripe.accounts.create({
-      type: "express",
-      email: seller?.email,
-      country: "GB",
-      capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true },
-      },
-    });
+    // Reuse existing Stripe account if seller already has one,
+    // otherwise create a new Connect account
+    let stripeAccountId = seller.stripeId;
 
-    await prisma.sellers.update({
-      where: { id: sellerId },
-      data: { stripeId: account.id },
-    });
+    if (!stripeAccountId) {
+      const account = await stripe.accounts.create({
+        type: "express",
+        email: seller.email,
+        country: "GB",
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+        },
+      });
+
+      stripeAccountId = account.id;
+
+      await prisma.sellers.update({
+        where: { id: sellerId },
+        data: { stripeId: account.id },
+      });
+    }
+
+    const clientBaseUrl =
+      process.env.CLIENT_URL || "http://localhost:3000";
 
     const accountLink = await stripe.accountLinks.create({
-      account: account.id,
-      refresh_url: "https://localhost:3000/success",
-      return_url: "https://localhost:3000/success",
+      account: stripeAccountId,
+      refresh_url: `${clientBaseUrl}/signup?stripe_refresh=true`,
+      return_url: `${clientBaseUrl}/success`,
       type: "account_onboarding",
     });
 
     res.json({
       url: accountLink.url,
     });
-  } catch (error) {
+  } catch (error: any) {
+    // Surface Stripe API errors with their actual message
+    if (error?.type?.startsWith("Stripe")) {
+      return next(new AppError(error.message, error.statusCode || 500));
+    }
     return next(error);
   }
 };

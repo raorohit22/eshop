@@ -99,3 +99,37 @@ And join the Nx community:
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+
+Phase 1: Deep Codebase Reconnaissance
+Analyze the src contents of api-gateway, auth-service, seller-ui, and user-ui.
+Trace the lifecycle of requests from Next.js UIs through the API Gateway to the Auth Service.
+Analyze Prisma schemas and database relationships.
+Phase 2: High-Level Architecture & DB Documents
+[NEW] docs/PROJECT_OVERVIEW.md
+[NEW] docs/ARCHITECTURE.md
+[NEW] docs/SYSTEM_DESIGN.md
+[NEW] docs/DATABASE.md
+[NEW] docs/ERD.md
+[NEW] docs/SCHEMA_REFERENCE.md
+Phase 3: API & Security Documents
+[NEW] docs/API_DOCUMENTATION.md
+[NEW] docs/AUTHENTICATION.md
+[NEW] docs/SECURITY.md
+[NEW] docs/MICROSERVICES.md
+Phase 4: Codebase & Performance Documents
+[NEW] docs/FOLDER_STRUCTURE.md
+[NEW] docs/FILE_REFERENCE.md
+[NEW] docs/FUNCTION_REFERENCE.md
+[NEW] docs/PERFORMANCE.md
+[NEW] docs/SCALABILITY.md
+[NEW] docs/REDIS.md
+Phase 5: Miscellaneous & Review Documents
+[NEW] docs/DESIGN_PATTERNS.md
+[NEW] docs/PROJECT_FLOW.md
+[NEW] docs/CODEBASE_IMPROVEMENTS.md
+[NEW] docs/INTERVIEW_GUIDE.md
+[NEW] docs/TECH_STACK.md
+[NEW] docs/CONFIG_REFERENCE.md
+[NEW] docs/DEPENDENCY_GRAPH.md
+[NEW] docs/README_PRO.md
