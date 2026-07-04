@@ -2,12 +2,19 @@ import prisma from "@packages/libs/prisma";
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 
+const getAuthToken = (cookies: Record<string, string | undefined>, authorization?: string) => {
+  return (
+    cookies["access_token"] ||
+    cookies["accessToken"] ||
+    cookies["seller-access-token"] ||
+    cookies["seller-accessToken"] ||
+    authorization?.split(" ")[1]
+  );
+};
+
 const isAuthenticated = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const token =
-      req.cookies["access_token"] ||
-      req.cookies["accessToken"] ||
-      req.headers.authorization?.split(" ")[1];
+    const token = getAuthToken(req.cookies, req.headers.authorization);
     if (!token) {
       return res
         .status(401)
