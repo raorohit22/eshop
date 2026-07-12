@@ -1,0 +1,22 @@
+{
+  "title": "test-debug",
+  "short_description": "test desc",
+  "tags": "test",
+  "warranty": "1 year",
+  "slug": "test-debug-slug-unique-999",
+  "brand": "test",
+  "cash_on_delivery": "yes",
+  "video_url": "",
+  "regular_price": 100,
+  "sale_price": 90,
+  "stock": 10,
+  "colors": [],
+  "customProperties": [],
+  "detailed_description": "<p>test</p>",
+  "sizes": [],
+  "custom_specifications": [],
+  "category": "Electronics",
+  "subcategory": "Camera",
+  "images": [],
+  "discountCodes": []
+}
