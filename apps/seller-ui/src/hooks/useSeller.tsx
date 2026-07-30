@@ -5,7 +5,7 @@ import axiosInstance from "../utils/axiosInstance";
 const fetchSeller = async () => {
 	try {
 		const response = await axiosInstance.get(`${process.env.NEXT_PUBLIC_SERVER_URI}/api/logged-in-seller`);
-		return response.data.seller;
+		return response.data.seller || null;
 	} catch (error) {
 		console.error("Error fetching seller:", error);
 		throw error;

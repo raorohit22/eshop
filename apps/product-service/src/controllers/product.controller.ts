@@ -6,6 +6,7 @@ import {
 import prisma from "@packages/libs/prisma";
 import { Request, Response, NextFunction } from "express";
 import imageKit from "@packages/libs/imagekit";
+import { Prisma } from "@prisma/client";
 
 //  get Product categories
 export const getCategories = async (
@@ -288,8 +289,8 @@ export const createProduct = async (
   }
 };
 
-// get all products
-export const getAllProducts = async (
+// get all shop products
+export const getAllShopProducts = async (
   req: any,
   res: Response,
   next: NextFunction,
@@ -402,5 +403,81 @@ export const restoreProduct = async (
       message: "Error restoring product",
       error,
     });
+  }
+};
+
+//get all products
+export const getAllProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+    const type = req.query.type;
+
+    // Safety check: Fetch valid shop IDs to filter out orphaned products
+    // (products with a shopId that doesn't correspond to a real shop).
+    // This prevents Prisma from throwing an "Inconsistent query result" error.
+    const validShops = await prisma.shops.findMany({ select: { id: true } });
+    const validShopIds = validShops.map((s) => s.id);
+
+    // MongoDB quirk: { field: null } does NOT match documents where the field
+    // is absent/missing — only where it's explicitly stored as null.
+    // Your products never write starting_date/ending_date, so the fields are
+    // absent. Use NOT + isSet to exclude only time-limited promotions.
+    const baseFilter: Prisma.productsWhereInput = {
+      isDeleted: { not: true },
+      shopId: { in: validShopIds },
+      NOT: {
+        AND: [
+          { starting_date: { isSet: true } },
+          { ending_date: { isSet: true } },
+        ],
+      },
+    };
+
+    const orderBy: Prisma.productsOrderByWithRelationInput =
+      type === "latest"
+        ? { createdAt: "desc" as Prisma.SortOrder }
+        : { totalSales: "desc" as Prisma.SortOrder };
+
+    const [products, total, top10Products] = await Promise.all([
+      prisma.products.findMany({
+        skip,
+        take: limit,
+        include: {
+          images: true,
+          shop: true,
+        },
+        where: baseFilter,
+        orderBy,
+      }),
+
+      prisma.products.count({
+        where: baseFilter,
+      }),
+
+      prisma.products.findMany({
+        take: 10,
+        where: baseFilter,
+        orderBy,
+      }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      products,
+      top10By: type === "latest" ? "latest" : "topSales",
+      top10Products,
+      total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (error: any) {
+    console.error("[getAllProducts] Error:", error?.message || error);
+    next(error);
   }
 };
